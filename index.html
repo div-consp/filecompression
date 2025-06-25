@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Compressor/Decompressor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(75, 85, 99, 0.5);
+            }
+
+            to {
+                box-shadow: 0 0 30px rgba(75, 85, 99, 0.8), 0 0 40px rgba(75, 85, 99, 0.3);
+            }
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            7% {
+                transform: rotateZ(0);
+            }
+
+            15% {
+                transform: rotateZ(-15deg);
+            }
+
+            20% {
+                transform: rotateZ(10deg);
+            }
+
+            25% {
+                transform: rotateZ(-10deg);
+            }
+
+            30% {
+                transform: rotateZ(6deg);
+            }
+
+            35% {
+                transform: rotateZ(-4deg);
+            }
+
+            40%,
+            100% {
+                transform: rotateZ(0);
+            }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black font-inter relative overflow-x-hidden">
+    <div class="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-16 animate-fade-in">
+            <div class="inline-flex items-center justify-center mb-6 p-4 rounded-full glass-effect hover-lift">
+                <svg class="w-16 h-16 text-white animate-pulse-slow" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                    </path>
+                </svg>
+            </div>
+            <h1 class="text-6xl md:text-7xl font-black mb-6 text-white drop-shadow-2xl">
+                <span class="inline-block">File</span>
+                <span class="inline-block">Compression</span>
+                <span class="inline-block">Studio</span>
+            </h1>
+            <p class="text-gray-300 text-xl md:text-2xl font-light tracking-wide drop-shadow-lg">
+                Advanced compression algorithms with stunning performance
+            </p>
+            <div class="mt-8 flex justify-center space-x-4">
+                <div class="px-6 py-2 glass-effect rounded-full text-gray-300 font-medium">
+                    ⚡ Lightning Fast
+                </div>
+                <div class="px-6 py-2 glass-effect rounded-full text-gray-300 font-medium">
+                    🔒 Secure
+                </div>
+                <div class="px-6 py-2 glass-effect rounded-full text-gray-300 font-medium">
+                    🎯 Precise
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+            <!-- Compress Section -->
+            <div class="glass-effect rounded-3xl shadow-2xl p-10 hover-lift animate-slide-up group">
+                <div class="flex items-center mb-8">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-r from-gray-600 to-gray-800 rounded-2xl flex items-center justify-center mr-6 group-hover:animate-wiggle shadow-xl">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-2">Compress Files</h2>
+                        <p class="text-gray-400 font-mono text-sm">Reduce file size efficiently</p>
+                    </div>
+                </div>
+
+                <form id="compressForm" method="post" enctype="multipart/form-data" action="/compress/"
+                    class="space-y-8">
+                    {% csrf_token %}
+
+                    <div class="space-y-3">
+                        <label for="compressFile" class="block text-sm font-bold text-gray-300 tracking-wide uppercase">
+                            📁 Select File to Compress
+                        </label>
+                        <div class="relative group">
+                            <input type="file" id="compressFile" name="file" required
+                                class="w-full px-6 py-4 border-2 border-gray-600 rounded-2xl focus:border-gray-400 focus:ring-4 focus:ring-gray-400/20 transition-all duration-300 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-gray-600 file:to-gray-800 file:text-white file:font-semibold file:cursor-pointer file:shadow-lg hover:file:from-gray-700 hover:file:to-gray-900 hover:file:shadow-xl file:transition-all file:duration-300 bg-gray-800/50 backdrop-blur-sm text-white placeholder-gray-400">
+                            <div
+                                class="absolute inset-0 rounded-2xl bg-gradient-to-r from-gray-600/20 to-gray-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label for="compressAlgorithm"
+                            class="block text-sm font-bold text-gray-300 tracking-wide uppercase">
+                            ⚙️ Compression Algorithm
+                        </label>
+                        <div class="relative">
+                            <select id="compressAlgorithm" name="algorithm"
+                                class="w-full px-6 py-4 border-2 border-gray-600 rounded-2xl focus:border-gray-400 focus:ring-4 focus:ring-gray-400/20 transition-all duration-300 bg-gray-800/50 backdrop-blur-sm text-white font-semibold appearance-none cursor-pointer hover:bg-gray-700/50">
+                                <option value="huffman" class="bg-gray-800 text-white">🌳 Huffman Coding</option>
+                                <option value="rle" class="bg-gray-800 text-white">🔄 Run-Length Encoding</option>
+                                <option value="lz77" class="bg-gray-800 text-white">📦 LZ77</option>
+                                <option value="gzip" class="bg-gray-800 text-white">⚡ GZIP</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-gray-600 to-gray-800 text-white font-bold py-4 px-8 rounded-2xl hover:from-gray-700 hover:to-gray-900 transform hover:scale-[1.02] transition-all duration-300 shadow-2xl hover:shadow-gray-500/25 group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <span class="flex items-center justify-center relative z-10">
+                            <svg class="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Compress File
+                        </span>
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Decompress Section -->
+            <div class="glass-effect rounded-3xl shadow-2xl p-10 hover-lift animate-slide-up group"
+                style="animation-delay: 0.2s;">
+                <div class="flex items-center mb-8">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-r from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center mr-6 group-hover:animate-wiggle shadow-xl">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l4-4m0 0l-4-4m4 4H8"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-2">Decompress Files</h2>
+                        <p class="text-gray-400 font-mono text-sm">Restore original files</p>
+                    </div>
+                </div>
+
+                <form id="decompressForm" method="post" enctype="multipart/form-data" action="/decompress/"
+                    class="space-y-8">
+                    {% csrf_token %}
+
+                    <div class="space-y-3">
+                        <label for="decompressFile"
+                            class="block text-sm font-bold text-gray-300 tracking-wide uppercase">
+                            📂 Select File to Decompress
+                        </label>
+                        <div class="relative group">
+                            <input type="file" id="decompressFile" name="file" required
+                                class="w-full px-6 py-4 border-2 border-gray-600 rounded-2xl focus:border-gray-400 focus:ring-4 focus:ring-gray-400/20 transition-all duration-300 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:bg-gradient-to-r file:from-gray-700 file:to-gray-900 file:text-white file:font-semibold file:cursor-pointer file:shadow-lg hover:file:from-gray-800 hover:file:to-black hover:file:shadow-xl file:transition-all file:duration-300 bg-gray-800/50 backdrop-blur-sm text-white placeholder-gray-400">
+                            <div
+                                class="absolute inset-0 rounded-2xl bg-gradient-to-r from-gray-700/20 to-gray-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label for="decompressAlgorithm"
+                            class="block text-sm font-bold text-gray-300 tracking-wide uppercase">
+                            🔧 Decompression Algorithm
+                        </label>
+                        <div class="relative">
+                            <select id="decompressAlgorithm" name="algorithm"
+                                class="w-full px-6 py-4 border-2 border-gray-600 rounded-2xl focus:border-gray-400 focus:ring-4 focus:ring-gray-400/20 transition-all duration-300 bg-gray-800/50 backdrop-blur-sm text-white font-semibold appearance-none cursor-pointer hover:bg-gray-700/50">
+                                <option value="huffman" class="bg-gray-800 text-white">🌳 Huffman Coding</option>
+                                <option value="rle" class="bg-gray-800 text-white">🔄 Run-Length Encoding</option>
+                                <option value="lz77" class="bg-gray-800 text-white">📦 LZ77</option>
+                                <option value="gzip" class="bg-gray-800 text-white">⚡ GZIP</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-gray-700 to-gray-900 text-white font-bold py-4 px-8 rounded-2xl hover:from-gray-800 hover:to-black transform hover:scale-[1.02] transition-all duration-300 shadow-2xl hover:shadow-gray-500/25 group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <span class="flex items-center justify-center relative z-10">
+                            <svg class="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10">
+                                </path>
+                            </svg>
+                            Decompress File
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Status Section -->
+        <div id="status" class="mt-12 text-center"></div>
+
+        <!-- Features Section -->
+        <div class="mt-20 grid md:grid-cols-3 gap-8">
+            <div class="glass-effect rounded-2xl p-8 text-center hover-lift group">
+                <div
+                    class="w-16 h-16 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:animate-bounce">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Lightning Speed</h3>
+                <p class="text-gray-400">Process files in milliseconds with optimized algorithms</p>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-8 text-center hover-lift group">
+                <div
+                    class="w-16 h-16 bg-gradient-to-r from-gray-700 to-gray-900 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:animate-bounce">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">100% Reliable</h3>
+                <p class="text-gray-400">Lossless compression with perfect file integrity</p>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-8 text-center hover-lift group">
+                <div
+                    class="w-16 h-16 bg-gradient-to-r from-gray-800 to-black rounded-full flex items-center justify-center mx-auto mb-6 group-hover:animate-bounce">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Secure Processing</h3>
+                <p class="text-gray-400">Your files are processed locally and never stored</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('compressForm').addEventListener('submit', function (e) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `
+                <div class="inline-flex items-center px-8 py-4 glass-effect rounded-2xl text-white shadow-2xl animate-pulse-slow">
+                    <svg class="animate-spin -ml-1 mr-4 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="font-semibold text-lg">🗜️ Compressing your file...</span>
+                </div>
+            `;
+        });
+
+        document.getElementById('decompressForm').addEventListener('submit', function (e) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `
+                <div class="inline-flex items-center px-8 py-4 glass-effect rounded-2xl text-white shadow-2xl animate-pulse-slow">
+                    <svg class="animate-spin -ml-1 mr-4 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="font-semibold text-lg">📂 Decompressing your file...</span>
+                </div>
+            `;
+        });
+    </script>
+</body>
+
+</html>
